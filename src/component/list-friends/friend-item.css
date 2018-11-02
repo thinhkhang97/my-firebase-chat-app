@@ -1,0 +1,36 @@
+.friend-container {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    justify-content: space-between;
+}
+.avatar-name {
+    display: flex;
+    align-items: center;
+}
+.avatar-frame {
+    height: 64px;
+    width: 64px;
+    background-color: #3B88C3;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+.name-frame {
+    font-family: Calibri;
+    font-weight: 500;
+    margin: 0 5px;
+}
+.status-frame {
+    height: 16px;
+    width: 16px;
+    background-color: gray;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+.onlined{
+    background-color: green;
+}
+
+.selected {
+    background-color: #CCE4F2;
+}

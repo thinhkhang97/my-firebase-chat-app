@@ -1,27 +1,71 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import firebase from 'firebase';
+import {StyledFirebaseAuth} from 'react-firebaseui';
+import Search from './component/list-friends/search';
+import FriendItem from './component/list-friends/friend-item';
+import ListFriends from './component/list-friends/list-friends';
 import './App.css';
 
+// firebase.initializeApp({
+//     apiKey: 'AIzaSyC0A17qTAnYD5hmZMp5h9uuxBSlodW9vHU',
+//     authDomain: 'my-firebase-chat-app-5236c.firebaseapp.com'
+// })
+//
+// class App extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       isSignedIn: false
+//     }
+//     this.uiConfig = {
+//       signInFlow: 'popup',
+//         signInOptions: [
+//             firebase.auth.GoogleAuthProvider.PROVIDER_ID
+//         ],
+//         callbacks: {
+//           signInSuccess: () => false
+//         }
+//     }
+//   }
+//
+//   componentDidMount() {
+//     firebase.auth().onAuthStateChanged(user=>
+//         this.setState({isSignedIn: user})
+//         );
+//   };
+//
+//   render() {
+//     return (
+//       <div>
+//           {this.state.isSignedIn ? (
+//               <span>
+//                 <div>
+//                   Signed In!
+//                 </div>
+//                   <div>
+//                     Welcome {firebase.auth().currentUser.displayName}
+//                   </div>
+//                 <img src={firebase.auth().currentUser.photoURL}/>
+//                 <button onClick={()=>firebase.auth().signOut()}>Sign out</button>
+//               </span>
+//           ) : (
+//               <span>Not signed in
+//                 <StyledFirebaseAuth uiConfig = {this.uiConfig} firebaseAuth={firebase.auth()}/>
+//               </span>
+//           )}
+//
+//       </div>
+//     );
+//   }
+// }
+
 class App extends Component {
-  render() {
+  render(){
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+        <div>
+          <ListFriends/>
+        </div>
+    )
   }
 }
 
