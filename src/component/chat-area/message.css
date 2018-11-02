@@ -1,0 +1,43 @@
+.message-frame-left {
+    margin: 5px 0px;
+    display: flex;
+    max-width: 900px;
+}
+
+.message-frame-right {
+    margin: 5px 0px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.text-field {
+    display:inline-block;
+    border-radius: 20px;
+    width: auto;
+    max-width: 600px;
+    padding: 10px;
+    margin: 0 10px;
+    color: white;
+    font-family: Calibri;
+    clear: both;
+}
+
+.text-field-left {
+    background-color: #D8E7F3;
+    color: black;
+}
+
+.text-field-right {
+    background-color: #3B88C3;
+}
+
+.avatar {
+    height: 64px;
+    width: 64px;
+    background-color: #3B88C3;
+    border-radius: 50%;
+    float: left;
+}
+
+.text-frame {
+}

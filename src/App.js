@@ -1,10 +1,23 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import {StyledFirebaseAuth} from 'react-firebaseui';
+
 import Search from './component/list-friends/search';
 import FriendItem from './component/list-friends/friend-item';
 import ListFriends from './component/list-friends/list-friends';
+import ChatArea from './component/chat-area/chat-area';
+import Chat from './component/pages/chat';
 import './App.css';
+
+class App extends Component {
+    render(){
+        return (
+            <div>
+                <Chat/>
+            </div>
+        )
+    }
+}
 
 // firebase.initializeApp({
 //     apiKey: 'AIzaSyC0A17qTAnYD5hmZMp5h9uuxBSlodW9vHU',
@@ -59,14 +72,6 @@ import './App.css';
 //   }
 // }
 
-class App extends Component {
-  render(){
-    return (
-        <div>
-          <ListFriends/>
-        </div>
-    )
-  }
-}
+
 
 export default App;

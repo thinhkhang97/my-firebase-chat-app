@@ -1,25 +1,22 @@
-.list-friend-container{
+.chat-area-container {
+    height: 100vh;
     font-family: Calibri;
     display: flex;
     flex-flow: column;
-    height: 100vh;
 }
 .title-frame {
-    flex: 0 1 auto;
     height: 50px;
+    flex: 0 1 auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-.search-frame {
-    flex: 0 1 50px;
-    margin: 5px 0;
-}
-
-.list-friend-frame {
+.message-frame {
+    width: 100%;
     flex: 1 1 auto;
     overflow-y: scroll;
     overflow-x: hidden;
 }
-
+.input-chat-frame {
+    flex: 0 1 50px;
+}

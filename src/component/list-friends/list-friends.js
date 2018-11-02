@@ -8,7 +8,7 @@ class ListFriends extends Component {
         return(
             <div className='list-friend-container'>
                 <div className='title-frame'>
-                    title
+                    Danh sach ban be
                 </div>
                 <div className='search-frame'>
                     <Search/>
