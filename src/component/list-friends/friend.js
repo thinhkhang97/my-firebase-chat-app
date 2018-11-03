@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-
-
-class FriendItem extends Component {
+import './friend.css'
+class Friend extends Component {
     render(){
         return(
             <div>
                 <div className='friend-container'>
                     <div className='avatar-name'>
-                        <img className='avatar-frame'/>
-                        <div className='name-frame'>
+                        <img className='avatar-friend-frame'/>
+                        <div className='name-friend-frame'>
                             Nguyen Thinh Khang
                         </div>
                     </div>
@@ -18,9 +17,9 @@ class FriendItem extends Component {
 
                 <div className='friend-container selected'>
                     <div className='avatar-name'>
-                        <div className='avatar-frame'>
+                        <div className='avatar-friend-frame'>
                         </div>
-                        <div className='name-frame'>
+                        <div className='name-friend-frame'>
                             Nguyen Thinh Khang
                         </div>
                     </div>
@@ -31,4 +30,4 @@ class FriendItem extends Component {
         )
     }
 }
-export default FriendItem;
+export default Friend;

@@ -3,6 +3,7 @@
     height: 100vh;
     transition: 0.3s;
     font-family: Calibri;
+    position: fixed;
     /*background-color: red;*/
 }
 
@@ -33,7 +34,7 @@
     background-color: #3B88C3;
     overflow: hidden;
     padding: 5px;
-    transition: 0.1s;
+    transition: 0.3s;
 }
 .avatar-frame {
     background-color: white;

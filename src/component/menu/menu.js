@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import './menu.css'
-
+import './menu.css';
+import firebase from 'firebase';
 
 export default class Menu extends Component {
     constructor(props) {
@@ -17,13 +17,14 @@ export default class Menu extends Component {
                 opacity: 0
             }
         }
+        //console.log(firebase.auth().currentUser);
     }
 
     onClickAvatar() {
-        console.log('onClickAvatar');
+        //console.log('onClickAvatar');
         this.setState({
             menuContainer: {
-                width: this.state.menuContainer.isOpened ? '60px' : '250px',
+                width: this.state.menuContainer.isOpened ? '60px' : '310px',
                 isOpened: !this.state.menuContainer.isOpened
             },
             expandMenuFrame: {
@@ -33,7 +34,11 @@ export default class Menu extends Component {
                 backgroundColor: this.state.menuContainer.isOpened ? '#3B88C3' : '#B0CFE7'
             }
         })
-        console.log(this.state.menuContainer);
+        //console.log(this.state.menuContainer);
+    }
+
+    onClickLogout() {
+        firebase.auth().signOut();
     }
 
     render() {
@@ -41,18 +46,18 @@ export default class Menu extends Component {
             <div>
                 <div id='menu-container' style={{width: this.state.menuContainer.width}}>
                     <div id='menu-frame' style={{backgroundColor: this.state.menuFrame.backgroundColor}}>
-                        <button id='avatar'
+                        <img id='avatar' src={firebase.auth().currentUser.photoURL}
                                 onClick={()=>this.onClickAvatar()}/>
                     </div>
                     <div id='expand-menu-frame' style={{opacity: this.state.expandMenuFrame.opacity}}>
                         <div>
-                            <img className='avatar-frame'/>
+                            <img className='avatar-frame' src={firebase.auth().currentUser.photoURL}/>
                         </div>
                         <div className='name-frame'>
-                            Nguyen Thinh Khang
+                            {firebase.auth().currentUser.displayName}
                         </div>
                         <div>
-                            <button id='log-out'>Dang xuat</button>
+                            <button id='log-out' onClick={()=>this.onClickLogout()}>Dang xuat</button>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './list-friends.css';
 import Search from './search';
-import FriendItem from './friend-item';
+import Friend from './friend';
 
 class ListFriends extends Component {
     render(){
@@ -14,13 +14,7 @@ class ListFriends extends Component {
                     <Search/>
                 </div>
                 <div className='list-friend-frame'>
-                    <FriendItem/>
-                    <FriendItem/>
-                    <FriendItem/>
-                    <FriendItem/>
-                    <FriendItem/>
-                    <FriendItem/>
-                    <FriendItem/>
+                    <Friend/>
                 </div>
             </div>
         );

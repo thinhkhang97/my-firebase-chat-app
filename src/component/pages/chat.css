@@ -3,7 +3,9 @@
     height: 100vh;
     display: flex;
 }
-
+.area-0 {
+    width: 60px;
+}
 .area-1 {
     max-width: 600px;
     flex: 1 1 400px;
