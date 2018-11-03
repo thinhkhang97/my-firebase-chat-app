@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './friend-item.css';
+
 
 class FriendItem extends Component {
     render(){
@@ -7,8 +7,7 @@ class FriendItem extends Component {
             <div>
                 <div className='friend-container'>
                     <div className='avatar-name'>
-                        <div className='avatar-frame'>
-                        </div>
+                        <img className='avatar-frame'/>
                         <div className='name-frame'>
                             Nguyen Thinh Khang
                         </div>

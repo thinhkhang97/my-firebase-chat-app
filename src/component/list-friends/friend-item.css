@@ -1,6 +1,7 @@
 .friend-container {
     display: flex;
     align-items: center;
+    max-height: 50px;
     margin: 5px 0;
     justify-content: space-between;
 }
@@ -9,9 +10,9 @@
     align-items: center;
 }
 .avatar-frame {
-    height: 64px;
-    width: 64px;
-    background-color: #3B88C3;
+    height: 16px;
+    width: 16px;
+    background-color: red;
     border-radius: 50%;
     margin: 0 5px;
 }

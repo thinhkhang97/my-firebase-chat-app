@@ -6,6 +6,7 @@ import Search from './component/list-friends/search';
 import FriendItem from './component/list-friends/friend-item';
 import ListFriends from './component/list-friends/list-friends';
 import ChatArea from './component/chat-area/chat-area';
+import Menu from './component/menu/menu';
 import Chat from './component/pages/chat';
 import './App.css';
 
@@ -13,7 +14,7 @@ class App extends Component {
     render(){
         return (
             <div>
-                <Chat/>
+                <FriendItem/>
             </div>
         )
     }

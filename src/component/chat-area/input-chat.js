@@ -6,7 +6,9 @@ export default class InputChat extends Component {
             <div>
                 <div className='search-container'>
                     <input className='search-input' placeholder='enter you messages'/>
-                    <button className='search-button'>Send</button>
+                    <button className='search-button'>
+                        <img src={require('./send-btn.svg')}/>
+                    </button>
                 </div>
             </div>
         )
