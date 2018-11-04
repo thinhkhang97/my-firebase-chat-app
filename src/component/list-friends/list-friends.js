@@ -2,8 +2,17 @@ import React, {Component} from 'react';
 import './list-friends.css';
 import Search from './search';
 import Friend from './friend';
+import {connect} from 'react-redux';
 
 class ListFriends extends Component {
+
+    getListFriend() {
+        console.log(this.props);
+        return this.props.listFriend.map(f=>{
+            return <Friend name={f.name} photoURL={f.photoUrl}/>
+        })
+    }
+
     render(){
         return(
             <div className='list-friend-container'>
@@ -14,11 +23,17 @@ class ListFriends extends Component {
                     <Search/>
                 </div>
                 <div className='list-friend-frame'>
-                    <Friend/>
+                    {this.getListFriend()}
                 </div>
             </div>
         );
     }
 }
 
-export default ListFriends
+const mapStateToProps = (state) => {
+    return {
+        listFriend: state.listFriend
+    }
+}
+
+export default connect(mapStateToProps)(ListFriends)

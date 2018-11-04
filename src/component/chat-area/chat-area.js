@@ -6,7 +6,7 @@ export default  class ChatArea extends Component {
     render(){
         return(
             <div className='chat-area-container'>
-                <div className='title-frame'>
+                <div className='chat-title-frame'>
                     Ten nguoi chat
                 </div>
                 <div className='message-frame'>

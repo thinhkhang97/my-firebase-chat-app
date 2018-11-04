@@ -4,12 +4,26 @@
     display: flex;
     flex-flow: column;
 }
-.title-frame {
+::-webkit-scrollbar {
+    background-color: #B0CFE7;
+    width: 20px;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #3B88C3;
+    border-radius: 10px;
+}
+
+.chat-title-frame {
     height: 50px;
-    flex: 0 1 auto;
+    flex: 0 1 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #3B88C3;
+    font-weight: 500;
+    font-size: 22px;
 }
 .message-frame {
     width: 100%;

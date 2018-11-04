@@ -1,0 +1,1 @@
+export const GET_LIST_FRIEND = 'GET_LIST_FRIEND';
