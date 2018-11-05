@@ -4,6 +4,11 @@
     margin: 5px 0;
     justify-content: space-between;
 }
+.friend-container:hover{
+    background-color: #CCE4F2;
+    border-radius: 30px;
+}
+
 .avatar-name {
     display: flex;
     align-items: center;

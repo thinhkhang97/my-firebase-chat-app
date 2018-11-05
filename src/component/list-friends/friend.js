@@ -4,9 +4,9 @@ class Friend extends Component {
     render(){
         return(
             <div>
-                <div className='friend-container'>
+                <div className='friend-container' onClick={()=>this.props.onClick()}>
                     <div className='avatar-name'>
-                        <img className='avatar-friend-frame' src={this.props.photoURL}/>
+                        <img className='avatar-friend-frame' src={this.props.photoURL} alt=''/>
                         <div className='name-friend-frame'>
                             {this.props.name}
                         </div>

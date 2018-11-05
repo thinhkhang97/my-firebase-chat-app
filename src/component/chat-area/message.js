@@ -8,13 +8,11 @@ export class MessageLeft extends Component {
                     <div>
                         <div className='message-frame-left'>
                             <div>
-                                <img className='avatar'/>
+                                <img className='avatar' src={this.props.photoUrl} alt=''/>
                             </div>
                             <div className='text-frame'>
                                 <div className='text-field text-field-left'>
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
-                                    euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad
-                                    minim veniam, quis nostrud exerci tation ullamcorper
+                                    {this.props.content}
                                 </div>
                             </div>
                         </div>
@@ -34,9 +32,7 @@ export class MessageRight extends Component {
                         <div className='message-frame-right'>
                             <div className='text-frame'>
                                 <div className='text-field text-field-right'>
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
-                                    euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad
-                                    minim veniam, quis nostrud exerci tation ullamcorper
+                                    {this.props.content}
                                 </div>
                             </div>
                         </div>

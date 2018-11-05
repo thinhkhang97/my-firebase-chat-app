@@ -3,14 +3,23 @@ import './list-friends.css';
 import Search from './search';
 import Friend from './friend';
 import {connect} from 'react-redux';
+import {loadMessage, getUserToChat} from "../../actions";
+import firebase from 'firebase';
+import {initConversation, getMessageFromDb} from "../../services/firebase-api";
 
 class ListFriends extends Component {
 
     getListFriend() {
-        console.log(this.props);
+        console.log("Got list friend: ",this.props);
         return this.props.listFriend.map(f=>{
-            return <Friend name={f.name} photoURL={f.photoUrl}/>
+            return <Friend name={f.name} photoURL={f.photoUrl} key={f.id} onClick={()=>this.getMessage(f)}/>
         })
+    }
+
+    getMessage(f){
+        initConversation(firebase.auth().currentUser.uid, f.id);
+        this.props.dispatch(getUserToChat(f));
+        getMessageFromDb(firebase.auth().currentUser.uid, f.id, this);
     }
 
     render(){

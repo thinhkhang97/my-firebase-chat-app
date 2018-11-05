@@ -4,7 +4,7 @@ import ChatArea from '../chat-area/chat-area';
 import ListFriends from '../list-friends/list-friends';
 import Menu from '../menu/menu';
 import firebase from 'firebase';
-import {addNewUser} from '../../services/firebase-api';
+import {addNewUser, sendMessage} from '../../services/firebase-api';
 import {getAllData} from '../../services/firebase-api';
 import {connect} from 'react-redux';
 

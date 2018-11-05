@@ -1,1 +1,3 @@
 export const GET_LIST_FRIEND = 'GET_LIST_FRIEND';
+export const GET_LIST_MESSAGE = 'GET_LIST_MESSAGE';
+export const GET_USER_TO_CHAT = 'GET_USER_TO_CHAT;'
