@@ -99,25 +99,36 @@ export function initConversation(userId1, userId2) {
         const friends = snapshot.val().friends;
 
         // get 2 users
-        const users = friends.map((f, index)=>{
+        const user1 = friends.map((f, index)=>{
             return {
                 ...f,
                 index: index
             }
-        }).filter(f=>f.id == userId1 || f.id == userId2);
+        }).filter(f=>f.id == userId1);
+        const user2 = friends.map((f, index)=>{
+            return {
+                ...f,
+                index: index
+            }
+        }).filter(f=>f.id == userId2);
         //console.log("check conversation of ",userId1, " and ", userId2);
         //console.log(users[0]["conversations"]);
         //console.log(users[1]["conversations"]);
-        addConversation(users[0].index, userId1+userId2, users[1].id);
-        addConversation(users[1].index, userId1+userId2, users[0].id);
+        addConversation(user1[0].index, userId1+userId2, user2[0].id);
+        addConversation(user2[0].index, userId1+userId2, user1[0].id);
 
         // check if it has create conversation before
-        firebase.database().ref('data/friends/'+users[0].index+'/conversations').once('value').then(snapshot=>{
+        firebase.database().ref('data/friends/'+user1[0].index+'/conversations').once('value').then(snapshot=>{
             const data = snapshot.val();
-            // console.log('check has con before ', data)
-
+            //console.log('check has con before ', data)
+            if(data == null){
+                createConversation(userId1+userId2);
+                return;
+            }
+            const con = data.filter(d=>d.with === userId2)
+            //console.log('check con: ', con);
             // if there are no conversation, create one
-            if(data === null)
+            if(con.length == 0)
                 createConversation(userId1+userId2);
         })
 
@@ -128,7 +139,7 @@ export function getMessageFromDb(senderId, receiverId, _this) {
     // Calculate the conversationId
     firebase.database().ref('data/friends').once('value').then(snapshot => {
         const data = snapshot.val();
-        //console.log(data);
+        console.log('get message form db data',data);
         const f = data.map((d, index) => {
             return {
                 ...d,
@@ -136,24 +147,30 @@ export function getMessageFromDb(senderId, receiverId, _this) {
             }
         }).filter(d => d.id == senderId)
         firebase.database().ref('data/friends/' + f[0].index).once('value').then(ss => {
-            //console.log(ss.val());
-            const con = ss.val().conversations.filter(c => c.with == receiverId);
-            if (con[0] === undefined)
-                return;
-            firebase.database().ref('message/').on('value', ss2=>{
-                //console.log(ss2.val());
-                const message = ss2.val().filter(m => m.conversationId == con[0].conversationId)
-                if(message[0] !== undefined)
-                {
-                    console.log('got message ', message[0]);
-                    _this.props.dispatch(loadMessage(message[0].content))
-                }
-
-            })
+            console.log('get message form db ss val',ss.val());
+            let con = undefined;
+            if(ss.val().conversations !== undefined){
+                console.log('get con between: ', senderId, receiverId);
+                con =  ss.val().conversations.filter(c => c.with == receiverId);
+                firebase.database().ref('message/').on('value', ss2=>{
+                    console.log(ss2.val());
+                    if(con.length>0)
+                    {
+                        const message = ss2.val().filter(m => m.conversationId == con[0].conversationId)
+                        if(message[0]!== undefined && message[0].content !== undefined)
+                        {
+                            console.log('got message ', message[0]);
+                            _this.props.dispatch(loadMessage(message[0].content))
+                        }
+                        else{
+                            _this.props.dispatch(loadMessage(null));
+                        }
+                    }
+                })
+            }
         })
     })
 }
-
 
 export function sendMessage(senderId, receiverId, content) {
     // Calculate the conversationId

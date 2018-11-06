@@ -10,12 +10,12 @@ class ChatArea extends Component {
 
     loadListMessage(){
         console.log('Loaded list message ', this.props.messages);
-        return this.props.messages.map((m, index)=>{
+        return this.props.messages !== null ? this.props.messages.map((m, index)=>{
             if(m.senderId == firebase.auth().currentUser.uid)
                 return <MessageRight content = {m.content} key={index}/>
             else
                 return <MessageLeft content = {m.content} photoUrl={this.props.receiver.photoUrl} key={index}/>
-        })
+        }) : []
     }
 
     render(){

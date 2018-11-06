@@ -9,10 +9,17 @@ import {initConversation, getMessageFromDb} from "../../services/firebase-api";
 
 class ListFriends extends Component {
 
+    constructor(props){
+        super(props);
+        this.state = {
+            idSelected: ''
+        }
+    }
+
     getListFriend() {
         console.log("Got list friend: ",this.props);
         return this.props.listFriend.map(f=>{
-            return <Friend name={f.name} photoURL={f.photoUrl} key={f.id} onClick={()=>this.getMessage(f)}/>
+            return <Friend name={f.name} photoURL={f.photoUrl} key={f.id} isSelected={this.state.idSelected===f.id} onClick={()=>this.getMessage(f)}/>
         })
     }
 
@@ -20,6 +27,7 @@ class ListFriends extends Component {
         initConversation(firebase.auth().currentUser.uid, f.id);
         this.props.dispatch(getUserToChat(f));
         getMessageFromDb(firebase.auth().currentUser.uid, f.id, this);
+        this.setState({idSelected: f.id});
     }
 
     render(){
