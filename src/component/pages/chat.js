@@ -4,17 +4,17 @@ import ChatArea from '../chat-area/chat-area';
 import ListFriends from '../list-friends/list-friends';
 import Menu from '../menu/menu';
 import firebase from 'firebase';
-import {addNewUser, sendMessage} from '../../services/firebase-api';
-import {getAllData} from '../../services/firebase-api';
+import {addNewUser} from '../../services/firebase-api';
+import {firestoreConnect} from 'react-redux-firebase';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 
 class Chat extends Component {
+    constructor(props){
+        super(props);
+    }
     componentDidMount(){
-        const currentUser = firebase.auth().currentUser;
-        addNewUser(currentUser.uid, currentUser.email, currentUser.displayName, currentUser.photoURL);
-
-        // load all data
-        getAllData(this);
+        addNewUser(this);
     }
     render(){
         return(
@@ -28,8 +28,19 @@ class Chat extends Component {
                 <div className='area-2'>
                     <ChatArea/>
                 </div>
+                {/*<div>*/}
+                    {/*{this.props.listFriend.length}*/}
+                {/*</div>*/}
             </div>
         )
     }
 }
-export default connect()(Chat);
+
+const mapStateToProp = (state) => {
+    //// console.log(state.firebase.auth);
+    return {
+        currentUser: state.firebase.auth
+    }
+}
+
+export default compose(connect(mapStateToProp), firestoreConnect())(Chat);

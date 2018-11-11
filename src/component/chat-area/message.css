@@ -41,3 +41,17 @@
 
 .text-frame {
 }
+
+@media only screen and (max-width: 800px) {
+    .search-frame{
+        height: 0px;
+        visibility: hidden;
+    }
+    .avatar {
+        height: 32px;
+        width: 32px;
+    }
+    .text-field{
+        font-size: 11px;
+    }
+}

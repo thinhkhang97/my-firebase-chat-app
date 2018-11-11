@@ -40,3 +40,16 @@
     background-color: #CCE4F2;
     border-radius: 30px;
 }
+
+@media only screen and (max-width: 800px) {
+    .status-frame{
+        visibility: hidden;
+    }
+    .name-friend-frame{
+        visibility: hidden;
+    }
+    .avatar-friend-frame{
+        height: 32px;
+        width: 32px;
+    }
+}

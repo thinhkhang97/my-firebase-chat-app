@@ -28,9 +28,18 @@
 .message-frame {
     width: 100%;
     flex: 1 1 auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 .input-chat-frame {
     flex: 0 1 50px;
+}
+
+@media only screen and (max-width: 800px) {
+    .chat-title-frame{
+        font-size: 14px;
+    }
+    .input-chat-frame {
+
+    }
 }

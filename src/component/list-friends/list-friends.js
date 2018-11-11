@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import './list-friends.css';
 import Search from './search';
 import Friend from './friend';
+import {compose} from 'redux';
 import {connect} from 'react-redux';
+import {firestoreConnect} from 'react-redux-firebase';
 import {loadMessage, getUserToChat} from "../../actions";
 import firebase from 'firebase';
 import {initConversation, getMessageFromDb} from "../../services/firebase-api";
@@ -17,16 +19,25 @@ class ListFriends extends Component {
     }
 
     getListFriend() {
-        console.log("Got list friend: ",this.props);
-        return this.props.listFriend.map(f=>{
-            return <Friend name={f.name} photoURL={f.photoUrl} key={f.id} isSelected={this.state.idSelected===f.id} onClick={()=>this.getMessage(f)}/>
+        // console.log("Got list friend: ",this.props.listFriend);
+        const listFriend = this.props.listFriend;
+        if(listFriend.length > 0)
+        return listFriend.map(f=>{
+            // return <Friend name={f.name} photoURL={f.photoUrl} key={f.id} isSelected={this.state.idSelected===f.id} onClick={()=>this.getMessage(f)}/>
+            return <Friend
+                name={f.name}
+                photoURL={f.photoURL}
+                key={f.id}
+                isSelected={this.state.idSelected===f.id}
+                onClick={()=>this.getMessage(f)}
+            />
         })
     }
 
     getMessage(f){
-        initConversation(firebase.auth().currentUser.uid, f.id);
+        initConversation(this.props.currentUser, f, this);
         this.props.dispatch(getUserToChat(f));
-        getMessageFromDb(firebase.auth().currentUser.uid, f.id, this);
+        // getMessageFromDb(firebase.auth().currentUser.uid, f.id, this);
         this.setState({idSelected: f.id});
     }
 
@@ -48,9 +59,29 @@ class ListFriends extends Component {
 }
 
 const mapStateToProps = (state) => {
+    const currentUserId = firebase.auth().currentUser.uid;
+    if(state.firestore.ordered.users !== undefined)
+    {
+        const users = state.firestore.ordered.users;
+        const user = users.filter(u => u.id === currentUserId);
+        if(user.length > 0){
+            const listFriend = user[0].friends.map(fid => {
+                const userInfo = users.filter(u => u.id === fid);
+                return {
+                    ...userInfo[0]
+                }
+            });
+            return {
+                listFriend,
+                currentUser: user[0]
+            }
+        }
+    }
     return {
-        listFriend: state.listFriend
+        listFriend: [],
+        currentUser: state.firebase.auth
     }
 }
 
-export default connect(mapStateToProps)(ListFriends)
+export default compose(firestoreConnect(['users', 'conversations']),
+    connect(mapStateToProps))(ListFriends)

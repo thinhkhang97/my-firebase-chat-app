@@ -27,3 +27,13 @@
     border: 0;
     background-color: transparent;
 }
+
+@media only screen and (max-width: 800px) {
+    .search-container{
+        height: 20px;
+    }
+
+    .search-input{
+        font-size: 12px;
+    }
+}

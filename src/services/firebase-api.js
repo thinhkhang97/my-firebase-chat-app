@@ -1,30 +1,75 @@
 import firebase from 'firebase';
 import {loadListFriend, loadMessage} from '../actions';
 
-// add new user in into list in firebase.
-export const addNewUser = (uid, email, name, photoUrl) => {
-    const data = firebase.database().ref('data/').once('value').then(snapshot=>{
-        const friends = snapshot.val().friends;
-        //console.log(friends);
 
-        // Find me in data
-        const foundFriend = friends.filter(f=>{
-            return f.id === uid ? f : null
-        })
-        
-        //console.log(foundFriend);
-        // Add user into data
-        if(foundFriend.length === 0) 
-            firebase.database().ref('data/friends').set([
-                ...friends,
-                {
-                    id: uid,
-                    email: email,
-                    name: name,
-                    photoUrl: photoUrl
+// add new user in into list in firebase.
+export const addNewUser = (_this) => {
+    // Find all friend in list users
+    _this.props.firestore.get({collection: 'users'}).then(res=>{
+        const allUsers = res.docs;
+
+        const friendsId = allUsers
+            .filter(user=> user.id !== _this.props.currentUser.uid)
+            .map(user=>user.id);
+        // console.log('Got list friend: ', friendsId);
+
+        // add all friend in to listFriend
+        const cu = _this.props.currentUser;
+        let willAddUser = null;
+
+        // check if this users was created
+        const thisUser = allUsers.filter(u => u.id === _this.props.currentUser.uid);
+
+        // set when the first time access.
+        if(thisUser.length === 0) {
+            willAddUser = {
+                name: cu.displayName,
+                uid: cu.uid,
+                photoURL: cu.photoURL,
+                friends: [
+                    ...friendsId
+                ],
+                conversations: []
+            }
+            _this.props.firestore.collection('users').doc(cu.uid).set(willAddUser);
+            // update friend of all users
+            for(let user of allUsers){
+                console.log(user.id,_this.props.currentUser.uid);
+                if(user.id !== _this.props.currentUser.uid){
+                    _this.props.firestore.collection('users').doc(user.id).update({
+                        friends: firebase.firestore.FieldValue.arrayUnion(cu.uid)
+                    })
                 }
-            ])
-    });
+            }
+        }
+        // update friend
+        else {
+            willAddUser = {
+                friends: [
+                    ...friendsId
+                ]
+            }
+            // console.log('update friend', willAddUser);
+            _this.props.firestore.collection('users').doc(cu.uid).update(willAddUser);
+        }
+
+
+    })
+
+}
+
+// export function getListFriend(_this) {
+//     const uid = firebase.auth().currentUser.uid;
+//     _this.props.firestore.collection('users').doc(uid).get().then(res=>{
+//         console.log('List Friend: ', res.data().friends);
+//     })
+// }
+
+export function getDataOfUser(uid, _this) {
+    _this.props.firestore.collection('users').doc(uid).get().then(res=>{
+        console.log('User data: ', res.data());
+        _this.props.listFriend.push(res.data());
+    })
 }
 
 // get all data
@@ -33,43 +78,6 @@ export function getAllData(_this) {
         //console.log(snapshot.val().friends);
         _this.props.dispatch(loadListFriend(snapshot.val().friends));
     })
-}
-
-// add the conversation for user
-export function addConversation(userIdex, conId, withId) {
-    firebase.database().ref('data/friends/'+userIdex).once('value').then(snapshot=>{
-        //console.log('add conversation into user: ', snapshot.val(), ' with id: ', conId);
-
-        // data is data of friends[userIdex]
-        const data = snapshot.val();
-        //console.log('check value of data.conversations: ', data.conversations);
-        // if there are no conversations
-        if(data['conversations'] === undefined)
-            firebase.database().ref('data/friends/'+userIdex).set({
-                ...data,
-                conversations: [
-                    {
-                        with: withId,
-                        conversationId: conId
-                    }
-                ]
-            })
-        else{
-            const con = data.conversations.filter(c=> c.with===withId)
-            //console.log('Result find conversation: ', con);
-            // if there is no conversation with this guy before
-            if(con.length === 0)
-                firebase.database().ref('data/friends/'+userIdex+'/conversations').set([
-                    ...data.conversations,
-                    {
-                        with: withId,
-                        conversationId: conId
-                    }
-                ])
-                //console.log('add new conversation');
-        }
-        //console.log('data after add conversations: ', snapshot.val());
-    });
 }
 
 // create a conversation after init conversation between 2 users
@@ -94,45 +102,37 @@ function createConversation(conId) {
 }
 
 // init a conversation between 2 users
-export function initConversation(userId1, userId2) {
-    firebase.database().ref('data/').once('value').then(snapshot=>{
-        const friends = snapshot.val().friends;
+export function initConversation(currentUser, user2, _this) {
+    // check if there was conversation with user 2
+    console.log('Current user: ', currentUser);
+    const con = currentUser.conversations.filter(con=>con.with === user2.uid);
+    console.log('find conversation: ', con);
+    if (con.length === 0) {
+        const conversationId = currentUser.uid + user2.uid;
 
-        // get 2 users
-        const user1 = friends.map((f, index)=>{
-            return {
-                ...f,
-                index: index
-            }
-        }).filter(f=>f.id == userId1);
-        const user2 = friends.map((f, index)=>{
-            return {
-                ...f,
-                index: index
-            }
-        }).filter(f=>f.id == userId2);
-        //console.log("check conversation of ",userId1, " and ", userId2);
-        //console.log(users[0]["conversations"]);
-        //console.log(users[1]["conversations"]);
-        addConversation(user1[0].index, userId1+userId2, user2[0].id);
-        addConversation(user2[0].index, userId1+userId2, user1[0].id);
+        // add conversation for user 1
+        _this.props.firestore.collection('users').doc(currentUser.uid).set({
+            ...currentUser,
+            conversations: currentUser.conversations.concat({
+                conversationId,
+                with: user2.uid
+            })
+        });
 
-        // check if it has create conversation before
-        firebase.database().ref('data/friends/'+user1[0].index+'/conversations').once('value').then(snapshot=>{
-            const data = snapshot.val();
-            //console.log('check has con before ', data)
-            if(data == null){
-                createConversation(userId1+userId2);
-                return;
-            }
-            const con = data.filter(d=>d.with === userId2)
-            //console.log('check con: ', con);
-            // if there are no conversation, create one
-            if(con.length == 0)
-                createConversation(userId1+userId2);
+        // add conversation for user 2
+        _this.props.firestore.collection('users').doc(user2.uid).set({
+            ...user2,
+            conversations: user2.conversations.concat({
+                conversationId,
+                with: currentUser.uid
+            })
+        });
+
+        _this.props.firestore.collection('conversations').doc(conversationId).set({
+            contents: []
         })
 
-    })
+    }
 }
 
 export function getMessageFromDb(senderId, receiverId, _this) {

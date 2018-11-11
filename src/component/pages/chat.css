@@ -7,8 +7,8 @@
     width: 60px;
 }
 .area-1 {
-    max-width: 600px;
-    flex: 1 1 400px;
+    max-width: 400px;
+    flex: 1 1 300px;
     border-right: 0.2px solid #3B88C3;
     padding: 0 7px;
 }
@@ -16,4 +16,10 @@
 .area-2 {
     flex: 1 1 auto;
     padding: 0 7px;
+}
+
+@media only screen and (max-width: 800px) {
+    .area-1 {
+        max-width: 45px;
+    }
 }
